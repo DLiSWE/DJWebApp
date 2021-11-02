@@ -1,7 +1,13 @@
-from .models import dbModel
+from .models import Room
 from rest_framework import serializers
 
-class dbModelSerializer(serializers.ModelSerializer):
+class RoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = dbModel
-        fields = ('field1', 'field2', 'blfield3', 'intfield', 'datefield')
+        model = Room
+        fields = ('code','host','can_pause','votes_to_skip','date_created')
+
+class CreateRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ('can_pause', 'votes_to_skip')
+        

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ExamplePage1 from './ExamplePage1';
-import ExamplePage2 from './ExamplePage2';
+import CRP from './CRP';
+import JRP from './JRP';
+import Example from './Example'
 import { 
     BrowserRouter as 
     Router, 
@@ -8,7 +9,7 @@ import {
     Route, 
     Link, 
     Redirect}
-    from "react-router-dom";
+from "react-router-dom";
 
 export default class HomePage extends Component {
     constructor(props) {
@@ -21,8 +22,9 @@ export default class HomePage extends Component {
                 <Route exact path="/">
                     <p>This is the Home Page</p>
                 </Route>
-                <Route path="/ExamplePage1" component={ExamplePage1} />
-                <Route path="/ExamplePage2" component={ExamplePage2} />
+                <Route path="/CRP" component={CRP} />
+                <Route path="/JRP" component={JRP} />
+                <Route path="/Example3/:exampleCode" component={Example} />
             </Switch>
         </Router>
     }

@@ -6,15 +6,15 @@ import random
 def generate_unique_code():
     length = 6
     while True:
-        code = ''.join(random.choises(string.ascii_uppercase, k=length))
-        if dbModel.objects.filter(code=code).count() == 0:
+        code = ''.join(random.choices(string.ascii_uppercase, k=length))
+        if Room.objects.filter(code=code).count() == 0:
             break
 
     return code
 
-class dbModel(models.Model):
-    field1 = models.CharField(max_length=8, default="", unique=True)
-    field2 = models.CharField(max_length=50, unique=True)
-    blfield3 = models.BooleanField(null=False, default=False)
-    intfield = models.IntegerField(null=False,default=0)
-    datefield = models.DateTimeField(auto_now_add=True)
+class Room(models.Model):
+    code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
+    host = models.CharField(max_length=50, unique=True)
+    can_pause = models.BooleanField(null=True, default=False)
+    votes_to_skip = models.IntegerField(null=False,default=1)
+    date_created = models.DateTimeField(auto_now_add=True)
