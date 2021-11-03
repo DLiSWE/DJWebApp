@@ -14,7 +14,7 @@ export default class Room extends Component {
         render() {
             return <div>
                 <h2>{this.roomCode}</h2>
-                <p>Votes: {this.state.VotesRequired</p>
+                <p>Votes: {this.state.VotesRequired}</p>
                 <p>Guest Can Pause?: {this.state.CanVote}</p>
                 <p>Host: {this.state.isHost}</p>
             </div>
