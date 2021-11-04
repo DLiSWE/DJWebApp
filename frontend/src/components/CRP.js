@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField"
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from "@material-ui/core/FormControl";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { TextField, Button, Grid, Typography, FormHelperText, FormControl, FormControlLabel, Radio, RadioGroup } from "@material-ui/core"
 
 export default class CRP extends Component {
     defaultInt = 2;
 
     constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
         CanVote: true,
         VotesRequired: this.defaultInt,
         };
+
         this.handlebuttonpress = this.handlebuttonpress.bind(this);
         this.handleCanVote = this.handleCanVote.bind(this);
         this.handleVoteNum = this.handleVoteNum.bind(this);
@@ -38,16 +31,16 @@ export default class CRP extends Component {
     }
     handlebuttonpress() {
         const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 votes_to_skip: this.state.VotesRequired,
                 can_pause: this.state.CanVote,
             }),
         };
         fetch("/api/create-room", requestOptions)
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+            .then((response) => response.json())
+            .then((data) => this.props.history.push('/room/' + data.code));
     }
 
     render() {

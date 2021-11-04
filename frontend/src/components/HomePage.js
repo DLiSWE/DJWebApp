@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import CRP from './CRP';
 import JRP from './JRP';
-import Example from './Example'
+import Room from './Room';
 import { 
-    BrowserRouter as 
-    Router, 
+    BrowserRouter as Router, 
     Switch, 
     Route, 
     Link, 
@@ -24,7 +23,7 @@ export default class HomePage extends Component {
                 </Route>
                 <Route path="/CRP" component={CRP} />
                 <Route path="/JRP" component={JRP} />
-                <Route path="/Example3/:exampleCode" component={Example} />
+                <Route path="/room/:roomCode" component={Room} />
             </Switch>
         </Router>
     }
