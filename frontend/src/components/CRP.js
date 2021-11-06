@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { TextField, Button, Grid, Typography, FormHelperText, FormControl, FormControlLabel, Radio, RadioGroup } from "@material-ui/core"
 
+//create room page component. Set default values and bind functions to constructor
 export default class CRP extends Component {
     defaultInt = 2;
 
@@ -22,13 +23,15 @@ export default class CRP extends Component {
             VotesRequired: e.target.value,
         });
     }
-
+//set default to false
     handleCanVote(e) {
         this.setState({
             CanVote: e.target.value === "true" ? true : false,
 
         });
     }
+
+//handle button press to link to specific room with given 'code' field
     handlebuttonpress() {
         const requestOptions = {
             method: "POST",
@@ -43,6 +46,7 @@ export default class CRP extends Component {
             .then((data) => this.props.history.push('/room/' + data.code));
     }
 
+//render page appearance and assigning events to buttons
     render() {
         return <Grid container spacing={1}>
             <Grid item xs={12} align="center">

@@ -31,13 +31,14 @@ export default class Room extends Component {
                 });
             });
         }
-
+//leave room on button click and push room callback function onto home page.
+//Also _response is used to show that the variable name is not important
         leaveButtonPressed() {
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
             };
-            fetch('/api/leave', requestOptions).then((response) => {
+            fetch('/api/leave', requestOptions).then((_response) => {
                 this.props.leaveRoomCallback();
                 this.props.history.push('/');
             });

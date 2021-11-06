@@ -9,7 +9,7 @@ export default class JRP extends Component {
         this.state = {
             roomCode: "",
             error: "",
-        }
+        };
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
         this.roomButtonPressed = this.roomButtonPressed.bind(this);
 
