@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Button, Typography } from "@material-ui/core";
+import { Grid, Button, Typography, responsiveFontSizes } from "@material-ui/core";
 import CRP from "./CRP";
 
 //create Room component
@@ -11,6 +11,7 @@ export default class Room extends Component {
             CanVote: false,
             isHost: false,
             showSettings: false,
+            spotifyAuthenticated: false,
         };
         this.roomCode = this.props.match.params.roomCode;
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
@@ -18,6 +19,7 @@ export default class Room extends Component {
         this.renderSettingButton = this.renderSettingButton.bind(this);
         this.renderSetting = this.renderSetting.bind(this);
         this.getRoomDetails = this.getRoomDetails.bind(this);
+        this.authenticateSpotify = this.authenticateSpotify.bind(this);
         this.getRoomDetails();
 
     }   
@@ -36,8 +38,28 @@ export default class Room extends Component {
                     CanVote: data.can_pause,
                     isHost: data.is_host,
                 });
+                if (this.state.isHost) {
+                    this.authenticateSpotify();
+                }
             });
         }
+//fetch url from AuthURL function which called to SpotifyCallback() then going to front end
+        authenticateSpotify() {
+            fetch('/spotify/is-authenticated')
+                    .then((response) => response.json())
+                    .then((data) => {
+                this.setState({ spotifyAuthenticated: data.status });
+                if (!data.status) {
+                    fetch('/spotify/get-auth-url')
+                            .then((response) => response.json())
+                            .then((data) => {
+                        window.location.replace(data.url);
+                    });
+                }
+
+            });
+        }
+
 //leave room on button click and push room callback function onto home page.
 //Also _response is used to show that the variable name is not important
         leaveButtonPressed() {
