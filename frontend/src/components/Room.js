@@ -12,6 +12,7 @@ export default class Room extends Component {
             isHost: false,
             showSettings: false,
             spotifyAuthenticated: false,
+            song: {}
         };
         this.roomCode = this.props.match.params.roomCode;
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
@@ -21,6 +22,7 @@ export default class Room extends Component {
         this.getRoomDetails = this.getRoomDetails.bind(this);
         this.authenticateSpotify = this.authenticateSpotify.bind(this);
         this.getRoomDetails();
+        this.getCurrentSong();
 
     }   
 //fetch data from page
@@ -59,6 +61,17 @@ export default class Room extends Component {
 
             });
         }
+
+        getCurrentSong() {
+            fetch('/spotify/current-song').then((response) => {
+                if (!response.ok) {
+                    return {};
+                } else {
+                    response.json();
+                }
+            }).then((data) => this.setState({song:data}))
+        }
+
 
 //leave room on button click and push room callback function onto home page.
 //Also _response is used to show that the variable name is not important
@@ -121,21 +134,7 @@ export default class Room extends Component {
                             Code: {this.roomCode}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} align="center">
-                        <Typography variant="h6" component="h6">
-                            Votes Required : {this.state.VotesRequired}    
-                        </Typography>                    
-                    </Grid>
-                    <Grid item xs={12} align="center">
-                        <Typography variant="h6" component="h6">
-                            Guest Can Pause : {this.state.CanVote.toString()}                        
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} align="center">
-                        <Typography variant="h6" component="h6">
-                            Host : {this.state.isHost.toString()}                        
-                        </Typography>
-                    </Grid>
+                    {this.state.song}
                     {this.state.isHost ? this.renderSettingButton() : null}
                     <Grid item xs={12} align="center">
                         <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
