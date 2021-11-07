@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
+import CRP from "./CRP";
 
 //create Room component
 export default class Room extends Component {
@@ -9,10 +10,16 @@ export default class Room extends Component {
             VotesRequired: 2,
             CanVote: false,
             isHost: false,
+            showSettings: false,
         };
         this.roomCode = this.props.match.params.roomCode;
+        this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
+        this.updateShowSettings = this.updateShowSettings.bind(this);
+        this.renderSettingButton = this.renderSettingButton.bind(this);
+        this.renderSetting = this.renderSetting.bind(this);
+        this.getRoomDetails = this.getRoomDetails.bind(this);
         this.getRoomDetails();
-        this.leaveButtonPressed = this.leaveButtonPressed.bind(this)
+
     }   
 //fetch data from page
         getRoomDetails() {
@@ -44,8 +51,47 @@ export default class Room extends Component {
             });
         }
 
+        updateShowSettings(value) {
+            this.setState({
+                showSettings: value,
+            });
+        }
+
+        renderSetting() {
+        return (
+            <Grid container spacing={1}>
+                <Grid item xs={12} align="center">
+                    <CRP update={true} 
+                        votesRequired={this.state.VotesRequired} 
+                        CanVote={this.state.CanVote} 
+                        roomCode={this.roomCode} 
+                        updateCallback={this.getRoomDetails}
+                    />
+                </Grid>
+                <Grid item xs={12} align="center">
+                    <Button variant="contained" color="primary" onClick={() => this.updateShowSettings(false)}>
+                        Close Setting
+                    </Button>
+                </Grid>
+            </Grid>
+        )}
+
+//update room page to show setting button if the user has host privaleges
+        renderSettingButton() {
+            return(
+                <Grid item xs={12} align="center">
+                    <Button variant="contained" color="primary" onClick={() => this.updateShowSettings(true)}>
+                        Settings
+                    </Button>
+                </Grid>
+            );
+        }
+
 //render results onto page from api/get-room
         render() {
+            if (this.state.showSettings) {
+                return this.renderSetting();
+        }
             return (
                 <Grid container spacing={1}>
                     <Grid item xs={12} align="center">
@@ -68,11 +114,12 @@ export default class Room extends Component {
                             Host : {this.state.isHost.toString()}                        
                         </Typography>
                     </Grid>
+                    {this.state.isHost ? this.renderSettingButton() : null}
                     <Grid item xs={12} align="center">
-                    <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
+                        <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
                     Leave Room
-                    </Button>
+                        </Button>
                     </Grid>
-                    </Grid>
-                    );
-                    }}
+                </Grid>
+                );
+            }}

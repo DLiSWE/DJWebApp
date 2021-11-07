@@ -54,13 +54,13 @@ handleTextFieldChange(e) {
     });
 }
 //handle button press event. Creates POST method to join room by room code.
-roomButtonPressed(e) {
+roomButtonPressed() {
     const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body : JSON.stringify({
             code: this.state.roomCode
-        })
+        }),
     };
 //
     fetch("/api/join-room", requestOptions).then((response) => {
