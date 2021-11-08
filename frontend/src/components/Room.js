@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Grid, Button, Typography, responsiveFontSizes } from "@material-ui/core";
+import { Grid, Button, Typography } from "@material-ui/core";
 import CRP from "./CRP";
+import MusicPlayer from "./MusicPlayer";
 
 //create Room component
 export default class Room extends Component {
@@ -12,7 +13,7 @@ export default class Room extends Component {
             isHost: false,
             showSettings: false,
             spotifyAuthenticated: false,
-            song: {}
+            song: {},
         };
         this.roomCode = this.props.match.params.roomCode;
         this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
@@ -21,10 +22,19 @@ export default class Room extends Component {
         this.renderSetting = this.renderSetting.bind(this);
         this.getRoomDetails = this.getRoomDetails.bind(this);
         this.authenticateSpotify = this.authenticateSpotify.bind(this);
+        this.getCurrentSong = this.getCurrentSong.bind(this);
         this.getRoomDetails();
-        this.getCurrentSong();
 
     }   
+
+        componentDidMount() {
+            this.interval = setInterval(this.getCurrentSong, 1000)
+        }
+//clear interval for component that will unmount
+        componentWillUnmount() {
+            clearInterval(this.interval);
+        }
+
 //fetch data from page
         getRoomDetails() {
             return fetch('/api/get-room' + '?code=' + this.roomCode)
@@ -58,18 +68,20 @@ export default class Room extends Component {
                         window.location.replace(data.url);
                     });
                 }
-
             });
         }
 
         getCurrentSong() {
-            fetch('/spotify/current-song').then((response) => {
+            fetch('/spotify/current-song')
+                .then((response) => {
                 if (!response.ok) {
                     return {};
                 } else {
-                    response.json();
+                    return response.json();
                 }
-            }).then((data) => this.setState({song:data}))
+            }).then((data) => {this.setState({song:data});
+                console.log(data);
+        });
         }
 
 
@@ -134,7 +146,7 @@ export default class Room extends Component {
                             Code: {this.roomCode}
                         </Typography>
                     </Grid>
-                    {this.state.song}
+                    <MusicPlayer {...this.state.song} />
                     {this.state.isHost ? this.renderSettingButton() : null}
                     <Grid item xs={12} align="center">
                         <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
