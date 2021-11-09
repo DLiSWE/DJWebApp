@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import CRP from "./CRP";
-import MusicPlayer from "./MusicPlayer";
+import MusicPlayer from "./musicPlayer";
 
 //create Room component
 export default class Room extends Component {
