@@ -10,6 +10,7 @@ import {
     Link, 
     Redirect}
 from "react-router-dom";
+import Info from './info';
 
 //create HomePage component
 export default class HomePage extends Component {
@@ -42,6 +43,9 @@ export default class HomePage extends Component {
                         <Button color="primary" to="/JRP" component={Link}>
                             Join a room!
                         </Button>
+                        <Button color="default" to="/info" component={Link}>
+                            Info
+                        </Button>    
                         <Button color="secondary" to="/CRP" component={Link}>
                             Create a room!
                         </Button>
@@ -49,18 +53,19 @@ export default class HomePage extends Component {
                 </Grid>
             </Grid>
 
-        )
+        );
     }
 
 clearRoomCode() {
     this.setState({
         roomCode: null,
-    })
+    });
 }
 
 //Home page should have exact path as / because path will include all other pages as well
     render() {
-        return <Router>
+        return (
+        <Router>
             <Switch>
                 <Route exact path="/" 
                     render={() => {
@@ -70,6 +75,7 @@ clearRoomCode() {
                 }}
                 />
                 <Route path="/CRP" component={CRP} />
+                <Route path="/info" component={Info} />
                 <Route path="/JRP" component={JRP} />
                 <Route path="/room/:roomCode" render={(props) => {
                     return <Room {...props} leaveRoomCallback={this.clearRoomCode} />;
@@ -77,5 +83,6 @@ clearRoomCode() {
                 />
             </Switch>
         </Router>
+        );
     }
 }
